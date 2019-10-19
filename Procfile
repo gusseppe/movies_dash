@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath apps/dash-nlp app:server
+web: python index.py
