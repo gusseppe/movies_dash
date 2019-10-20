@@ -12,6 +12,7 @@ from dash.dependencies import Input, Output
 # from dashboard.apps import define_front, \
 #     analyze_front, model_front, tune_front, predict_front
 
+server = app.server
 
 navbar = view.navbar('CINES MADRID')
 
