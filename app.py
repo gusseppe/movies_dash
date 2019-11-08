@@ -8,8 +8,8 @@ import dash_html_components as html
 #     ['hello', 'world']
 # ]
 
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SANDSTONE])
+server = flask.Flask(__name__) # Declara un servidor de Flask
+app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SANDSTONE]) # Pasa el servidor Flask a Dash
 # app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.DARKLY])
 
 # auth = dash_auth.BasicAuth(

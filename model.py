@@ -1,32 +1,39 @@
-import json
-import os
+import json # se encarga de leer archivos tipo json, o sea, diccionarios
+import os # se encarga de llamar funciones del sistema
 
-from urllib.request import urlopen
+from urllib.request import urlopen # sirve
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
 
 def get_movies_filmaffinity():
-    file_path = 'movies_filmaffinity.json'
-    if os.path.isfile(file_path):
+    """"
+        Esta funcion sirve para extraer datos de la pagina
+        filmaffinity
+
+    """
+    file_path = 'movies_filmaffinity.json' # Aqui se guardaran los datos de cada pelicula
+    if os.path.isfile(file_path):# Verifica si existe el archivo, sino lo crea de nuevo
         print(f'{file_path} already exists.')
         with open(file_path, 'r') as fp:
             movies = json.load(fp)
 
         return movies
 
-    else:
+    else: # lo crea de nuevo
         url = 'https://www.filmaffinity.com/es/topcat.php?id=new_th_es'
 
-        page = urlopen(url)
-        soup = BeautifulSoup(page, 'html.parser')
+        page = urlopen(url) # descarga la pagina de filmaffinity
+        soup = BeautifulSoup(page, 'html.parser') # declaro un parser, beautiful soap
 
         # picture = soup.find_all('div', attrs={'class': 'mc-left'})
-        picture = soup.find_all('div', attrs={'class': 'mc-poster'})
-        rating = soup.find_all('div', attrs={'class': 'avg-rating'})
-        rating_count = soup.find_all('div', attrs={'class': 'rat-count'})
+        picture = soup.find_all('div', attrs={'class': 'mc-poster'}) # me ubico en el poster para descargar las fotos
+        rating = soup.find_all('div', attrs={'class': 'avg-rating'})# descargo los avg scores
+        rating_count = soup.find_all('div', attrs={'class': 'rat-count'})# descargo los scores
 
         movies = []
+        # Se encarga de guardar los descargado a un dictionario
+        # que luego se guardara en mongodb
         for div1, div2, div3 in zip(picture, rating, rating_count):
             # for a in div:
             # titles.append(div.a)
@@ -45,6 +52,11 @@ def get_movies_filmaffinity():
 
 
 def get_movies_kinepolis():
+    """"
+        Esta funcion sirve para extraer datos de la pagina
+        kinepolis
+
+    """
     file_path = 'movies_filmaffinity.json'
 
     if os.path.isfile(file_path):

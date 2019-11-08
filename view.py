@@ -11,6 +11,9 @@ from dash.dependencies import Input, Output, State
 
 
 def header(title='Some title', intro='intro', body='body'):
+    """"
+        Se encarga de mostrar la parte superior de la vista (titulos, dropdown)
+    """
     _header = dbc.Container(
         [
             dbc.Jumbotron(
@@ -19,18 +22,6 @@ def header(title='Some title', intro='intro', body='body'):
                         [
                             html.H1(title,
                                     className="text-center text-info"),
-                            # html.H5(
-                            #     # "DeployML is a framework that aims to sum up the results and track the health "
-                            #     # "of a Machine Learning model.",
-                            #     intro,
-                            #     className="mt-4",
-                            # ),
-                            # dbc.Button("More info", id="collapse-button", className="mb-3"),
-                            # dbc.Collapse(
-                            #     #dbc.Card(dbc.CardBody("This content is hidden in the collapse")),
-                            #     dcc.Markdown(body),
-                            #     id="collapse",
-                            # ),
                         ],
                         fluid=True,
                     )
@@ -46,6 +37,9 @@ def header(title='Some title', intro='intro', body='body'):
 
 
 def navbar(title='DeployML', repo_site='#'):
+    """"
+        Se encarga de mostrar los nombres del equipo en un dropdown
+    """
     _navbar = dbc.NavbarSimple(
         children=[
             # dbc.NavItem(dbc.NavLink("Bitbucket", href=repo_site)),
@@ -71,6 +65,9 @@ def navbar(title='DeployML', repo_site='#'):
 def card(title='DeployML',
          description='some brief description regarding the app',
          href='#', image_path=''):
+    """"
+        Genera un contenedor donde va ubicado las peliculas y descripcion.
+    """
     _card = dbc.Card(
         [
             dbc.CardImg(
@@ -114,15 +111,18 @@ def card(title='DeployML',
 
 
 def body():
+    """"
+        Lista todas las peliculas en la pagina usando contenedores tipo Card.
+    """
 
     body = dbc.Container(
         [
-            dbc.Row(
+            dbc.Row( # En una sola fila, aunque puede ajustarse al ancho de la pantalla
                 [
 
                     dbc.Col(card(d['name'], f"Score: {d['rating']}",
                                  '#', d['img']), width=3)
-                    for d in model.get_movies_filmaffinity()[:5]
+                    for d in model.get_movies_filmaffinity()[:5] # Muestra 5 peliculas
 
                     # dbc.Col(card('Hadoop', 'Hadoop benchmark',
                     #                   '/hadoop', hadoop_image), width=3),
@@ -145,6 +145,9 @@ def body():
     [State("collapse", "is_open")],
 )
 def toggle_collapse(n, is_open):
+    """"
+        Se encargara del evento de aparecer informacion cuando se hace click en un boton
+    """
     if n:
         return not is_open
     return is_open
