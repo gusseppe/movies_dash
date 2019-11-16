@@ -17,7 +17,8 @@ server = app.server
 
 # Actualizar cada x dias.
 def update_database():
-    tools.drop_mongo()
+    if config.mongo_activated:
+        tools.drop_mongo()
     tools.remove_local_files()
     print(f'Base de datos actualizada, siendo: {time.ctime()}')
     print(f'Se volvera a actualizar en: {config.interval_update/3600} horas')
