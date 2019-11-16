@@ -74,6 +74,7 @@ preshed==2.0.1
 prometheus-client==0.7.1
 prompt-toolkit==2.0.9
 ptyprocess==0.6.0
+pymongo==3.9.0
 py==1.8.0
 Pygments==2.4.2
 pyLDAvis==2.1.2
@@ -110,4 +111,3 @@ Werkzeug==0.15.5
 widgetsnbextension==3.5.1
 wordcloud==1.5.0
 zipp==0.6.0
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0
