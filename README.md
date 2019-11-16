@@ -1,16 +1,24 @@
-# dash-nlp
+# Movies dash
 
 ## About this app
 
-A tidy example of how plotly's excellent dash framework can be used for Natural Language Processing (NLP)
+Shows movies and some analytics.
 
 ## How to run this app
 
-To run this app first clone repository and then open a terminal to the app folder.
+- Open a terminal
+- Clone repository and enter to folder:
 
 ```
-git clone https://github.com/plotly/dash-sample-apps.git
-cd dash-sample-apps/apps/dash-nlp
+git clone https://github.com/gusseppe/movies_dash.git
+cd movies_dash
+```
+
+If mongo_activated=True. Install MongoDB :
+
+```
+sudo apt update
+sudo apt install -y mongodb
 ```
 
 Install the requirements:
@@ -21,11 +29,9 @@ pip install -r requirements.txt
 Run the app:
 
 ```
-python app.py
+python index.py
 ```
+
 You can run the app on your browser at http://127.0.0.1:8050
 
 
-## Resources
-
-To learn more about Dash, please visit [documentation](https://plot.ly/dash).
