@@ -6,7 +6,7 @@ mongo_activated = False # Si es True entonces usara mongo, sino, usara json (arc
 interval_update = 1 * 86400  # El numero de segundos que esperara la aplicacion para actualizarse.
 update_activated = True # Si toda la base de datos se actualizara ahora y posteriormente.
 title = 'UC3M project: The best movie for you' # Titulo esquina superior izquierda
-number_of_tweets = 10
+number_of_tweets = 100
 # sub_title = 'Elige tu pelicula' # Subtitulo
 # info_app = 'Applicacion que muestra estadisticas utiles de peliculas en carteleras locales'
 
