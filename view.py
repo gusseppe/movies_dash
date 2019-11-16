@@ -84,8 +84,8 @@ def card(d_info, _id=1):
             ),
             dbc.CardBody(
                 [
-                    html.H4(d_info['name'].capitalize(), className="card-title"), # Nombre de la pelicual. E.g, Joker
-                    html.P(
+                    html.H2(d_info['name'].capitalize(), className="card-title"), # Nombre de la pelicual. E.g, Joker
+                    html.H3(
                         f"Rating: {d_info['rating']}", # Rating
                         className="card-text",
                     ),
@@ -97,13 +97,13 @@ def card(d_info, _id=1):
                             [
                                 dbc.Progress(value=d_info['sentiment'][0] * 100,
                                              color="success", bar=True, style={"height": "1px"},
-                                             children=f"Positivo: {d_info['sentiment'][0] * 100}"),
+                                             children=f"Pos: {round(d_info['sentiment'][0] * 100, 1)}"),
                                 dbc.Progress(value=d_info['sentiment'][1] * 100,
                                              color="danger", bar=True,
-                                             children=f"Negativo: {d_info['sentiment'][1] * 100}"),
+                                             children=f"Neg: {round(d_info['sentiment'][1] * 100, 1)}"),
                                 dbc.Progress(value=d_info['sentiment'][2] * 100,
                                              color="warning", bar=True,
-                                             children=f"Neutro: {d_info['sentiment'][2] * 100}"),
+                                             children=f"Neu: {round(d_info['sentiment'][2] * 100, 1)}"),
                             ],
                             style={"height": "30px"},
                             multi=True,
