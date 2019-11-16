@@ -1,12 +1,13 @@
 import os
+import config
+import dash # libreria que se encarga de mostrar el dashboard
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
-import model
-import controller
+import model # Es el modelo de nuestra apliccion
+import controller # El controlador de nuestra aplicacion
 
-from app import app
-
+from app import app #
 from dash.dependencies import Input, Output, State
 
 
@@ -24,34 +25,34 @@ def header(title='Some title', intro='intro', body='body'):
                                     className="text-center text-info"),
                         ],
                         fluid=True,
-                    )
+                    ),
                 ],
                 fluid=True,
             )
         ],
-        className="mt-4",
+        className="mt-5",
         fluid=True,
     )
 
     return _header
 
 
-def navbar(title='DeployML', repo_site='#'):
+def navbar(title='mi_titulo_navbar', repo_site='#'):
     """"
         Se encarga de mostrar los nombres del equipo en un dropdown
     """
     _navbar = dbc.NavbarSimple(
         children=[
             # dbc.NavItem(dbc.NavLink("Bitbucket", href=repo_site)),
+            # html.A('Refresh', href='/'),
+            # dbc.NavItem(dbc.NavLink("¡Tendré suerte!", href="/")),
+            dbc.NavItem(dbc.Button(html.A('¡Tendré suerte!', href='/'))),
             dbc.DropdownMenu(
                 nav=True,
                 in_navbar=True,
                 label="Equipo",
                 children=[
-                    dbc.DropdownMenuItem(d['name'], href=d['site']) for d in model.list_team()
-                    # dbc.DropdownMenuItem("Entry 2"),
-                    # dbc.DropdownMenuItem(divider=True),
-                    # dbc.DropdownMenuItem("Logout"),
+                    dbc.DropdownMenuItem(d['name'], href=d['site']) for d in config.team
                 ],
             ),
         ],
@@ -62,16 +63,12 @@ def navbar(title='DeployML', repo_site='#'):
     return _navbar
 
 
-def card(title='DeployML',
-         description='some brief description regarding the app',
-         href='#', image_path=''):
-    """"
-        Genera un contenedor donde va ubicado las peliculas y descripcion.
-    """
+def card(d_info, _id=1):
     _card = dbc.Card(
         [
             dbc.CardImg(
-                src=image_path,
+                # src='assets/images/thumbs-down.png',
+                src=d_info['img'],
                 # src=(
                 #     "https://placeholdit.imgix.net/~text?"
                 #     "txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -85,24 +82,48 @@ def card(title='DeployML',
                 },
                 top=True
             ),
-            # dbc.CardBody(
-            #     # [dbc.CardTitle(title), dbc.CardSubtitle("Card subtitle")]
-            #     # [dbc.CardTitle(title)]
-            #     [html.H5(title, className="card-title")]
-            # ),
             dbc.CardBody(
                 [
-                    # dbc.CardText(description),
-                    # dbc.CardLink("Go to app", href=href),
-                    # dbc.CardLink("Another link", href="#"),
-
-                    html.H4(title, className="card-title"),
+                    html.H4(d_info['name'].capitalize(), className="card-title"), # Nombre de la pelicual. E.g, Joker
                     html.P(
-                        description,
+                        f"Rating: {d_info['rating']}", # Rating
                         className="card-text",
                     ),
-                    dbc.Button("Go somewhere", color="primary"),
-                    ]
+                    dbc.Button("Magic", color="primary", id=f"collapse-button-{_id}"),
+                    html.Hr(),
+                    dbc.Collapse([
+                        html.H4('Sentiment Twitter'),
+                        dbc.Progress(
+                            [
+                                dbc.Progress(value=d_info['sentiment'][0] * 100,
+                                             color="success", bar=True, style={"height": "1px"},
+                                             children=f"Positivo: {d_info['sentiment'][0] * 100}"),
+                                dbc.Progress(value=d_info['sentiment'][1] * 100,
+                                             color="danger", bar=True,
+                                             children=f"Negativo: {d_info['sentiment'][1] * 100}"),
+                                dbc.Progress(value=d_info['sentiment'][2] * 100,
+                                             color="warning", bar=True,
+                                             children=f"Neutro: {d_info['sentiment'][2] * 100}"),
+                            ],
+                            style={"height": "30px"},
+                            multi=True,
+                        ),
+                        html.Hr(),
+                        dcc.Markdown(d_info['collapse']),
+                        dbc.CardImg(
+                            src=d_info['wordcloud'],
+                            style={
+                                "height": '15rem',
+                            },
+                            top=True
+                        ),
+                        html.Hr(),
+                        html.P(d_info['update']),
+
+                    ],
+                        id=f"collapse-{_id}",
+                    ),
+                ]
             ),
         ],
         style={"max-width": "320px"},
@@ -118,18 +139,8 @@ def body():
     body = dbc.Container(
         [
             dbc.Row( # En una sola fila, aunque puede ajustarse al ancho de la pantalla
-                [
-
-                    dbc.Col(card(d['name'], f"Score: {d['rating']}",
-                                 '#', d['img']), width=3)
-                    for d in model.get_movies_filmaffinity()[:5] # Muestra 5 peliculas
-
-                    # dbc.Col(card('Hadoop', 'Hadoop benchmark',
-                    #                   '/hadoop', hadoop_image), width=3),
-                    # dbc.Col(card('Spark', 'Spark benchmark',
-                    #                   '/spark', spark_image), width=3),
-                ],
-                justify='center'
+                    controller.show_cards() # Llama al controlador par aque se encargue de mostrar las peliculas
+                , justify='center'
             )
         ],
         className="mt-4",
@@ -139,15 +150,67 @@ def body():
     return body
 
 
+# @app.callback(
+#     Output("collapse-1", "is_open"),
+#     [Input("collapse-button-1", "n_clicks")],
+#     [State("collapse-1", "is_open")],
+# )
+# def toggle_collapse(n, is_open):
+#     """"
+#         Se encargara del evento de aparecer informacion cuando se hace click en un boton
+#     """
+#     if n:
+#         print('hola')
+#         return not is_open
+#     return is_open
+
 @app.callback(
-    Output("collapse", "is_open"),
-    [Input("collapse-button", "n_clicks")],
-    [State("collapse", "is_open")],
+    [Output(f"collapse-{i}", "is_open") for i in range(0, config.number_of_movies)],
+    [Input(f"collapse-button-{i}", "n_clicks") for i in range(0, config.number_of_movies)],
+    [State(f"collapse-{i}", "is_open") for i in range(0, config.number_of_movies)],
 )
-def toggle_collapse(n, is_open):
-    """"
-        Se encargara del evento de aparecer informacion cuando se hace click en un boton
-    """
-    if n:
-        return not is_open
-    return is_open
+def toggle_collapse(n0, n1, n2, n3,
+                    is_open0, is_open1, is_open2, is_open3):
+    ctx = dash.callback_context
+
+    if not ctx.triggered:
+        return ""
+    else:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    if button_id == "collapse-button-0" and n0:
+        return not is_open0, False, False, False
+    elif button_id == "collapse-button-1" and n1:
+        return False, not is_open1, False, False
+    elif button_id == "collapse-button-2" and n2:
+        return False, False, not is_open2, False
+    elif button_id == "collapse-button-3" and n3:
+        return False, False, False, not is_open3
+    return False, False, False, False
+
+# @app.callback(
+#     [Output(f"collapse-{i}", "is_open") for i in range(0, config.number_of_movies)],
+#     [Input(f"collapse-button-{i}", "n_clicks") for i in range(0, config.number_of_movies)],
+#     [State(f"collapse-{i}", "is_open") for i in range(0, config.number_of_movies)],
+# )
+# def toggle_collapse(n0, n1, n2, n3, n4,
+#                      is_open0, is_open1, is_open2, is_open3,
+#                      is_open4):
+#     ctx = dash.callback_context
+#
+#     if not ctx.triggered:
+#         return ""
+#     else:
+#         button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+#
+#     if button_id == "collapse-button-0" and n0:
+#         return not is_open0, False, False, False, False
+#     elif button_id == "collapse-button-1" and n1:
+#         return False, not is_open1, False, False, False
+#     elif button_id == "collapse-button-2" and n2:
+#         return False, False, not is_open2, False, False
+#     elif button_id == "collapse-button-3" and n3:
+#         return False, False, False, not is_open3, False
+#     elif button_id == "collapse-button-4" and n4:
+#         return False, False, False, False, not is_open4
+#     return False, False, False, False, False
