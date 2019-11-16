@@ -14,6 +14,9 @@ git clone https://github.com/gusseppe/movies_dash.git
 cd movies_dash
 ```
 
+
+By default mongo_activated=False. Check config.py file.
+
 If mongo_activated=True. Install MongoDB :
 
 ```
