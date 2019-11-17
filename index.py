@@ -8,9 +8,10 @@ import tools
 import time, threading
 
 from datetime import datetime, timedelta
-nltk.download('book')
-
 from app import app
+# nltk.download('book')
+nltk.download('stopwords')
+
 
 server = app.server
 
