@@ -37,6 +37,20 @@ def show_info_card():
     # for d in model.get_movies_filmaffinity()[:config.number_of_movies]:
         d_info = dict()
         d_info.update(d)
+
+        movies_kinepolis = model.get_movies_kinepolis()
+        rating_kinepolis = [dk['score'] for dk in movies_kinepolis if dk['name'] in d['name']]
+        rating_filmaff = float(d_info['rating'].replace(',', '.'))
+        if len(rating_kinepolis) != 0: # Si existe el rating convertirlo a float
+            rating_kinepolis = float(rating_kinepolis[0].replace(',', '.'))
+        else: # Si no existe, solo considerar el filmaffinity
+            rating_kinepolis = rating_filmaff
+
+        rating_average = (rating_kinepolis + rating_filmaff) / 2
+
+        d_info['rating'] = round(rating_average, 1)
+        print('Rating Kinepolis', rating_kinepolis)
+        print('Rating promedio', rating_average)
         print('NAME', d['name'])
         try:
             d_info['youtube'] = model.get_youtube(d['name'])[0]['link']
