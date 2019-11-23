@@ -2,7 +2,7 @@
     Configuraciones iniciales para la aplicacion.
 """
 
-mongo_activated = False # Si es True entonces usara mongo, sino, usara json (archivo local).
+mongo_activated = True # Si es True entonces usara mongo, sino, usara json (archivo local).
 interval_update = 1 * 86400  # El numero de segundos que esperara la aplicacion para actualizarse.
 update_activated = False # Si toda la base de datos se actualizara ahora y posteriormente.
 title = 'UC3M project: The best movie for you' # Titulo esquina superior izquierda

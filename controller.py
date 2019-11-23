@@ -55,14 +55,17 @@ def show_info_card():
         try:
             d_info['youtube'] = model.get_youtube(d['name'])[0]['link']
         except:
-            d_info['youtube'] = model.get_youtube(d['name'])['link']
+            d_info['youtube'] = 'Muy pronto link'
+            # d_info['youtube'] = model.get_youtube(d['name'])['link']
 
         d_info['weather'] = model.get_weather()
         d_info['weather_api'] = model.get_weather_api()
         d_info['sentiment'] = model.get_sentiment_twitter(d['name'])
         try:
+            print(model.get_wordcloud(d['name']))
             d_info['wordcloud'] = model.get_wordcloud(d['name'])[0]['path']
         except:
+            print(model.get_wordcloud(d['name'])['path'])
             d_info['wordcloud'] = model.get_wordcloud(d['name'])['path']
 
         d_info['update'] = model.get_update_db()

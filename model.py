@@ -130,7 +130,7 @@ def get_movies_kinepolis():
 
         db = client.test_database
 
-        movie_collections = list(db[{label}].find().sort('_id', -1).limit(10))
+        movie_collections = list(db[label].find().sort('_id', -1).limit(10))
 
         if len(movie_collections) == 0: # Entonces escribir en mongo
             movies = _get_movies_kinepolis()
